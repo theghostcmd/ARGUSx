@@ -1,2 +1,33 @@
-import {telemetry} from '../data/mock/telemetry';import {incidents} from '../data/mock/incidents';import {graph} from '../data/mock/graph';
-export const getTelemetry=async()=>telemetry;export const getIncidents=async()=>incidents;export const getIncidentById=async(id)=>incidents.find(x=>x.id===id);export const getGraph=async()=>graph;
+import axios from "axios";
+
+const BASE =
+  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
+export const getTelemetry = async () => {
+  const response = await axios.get(`${BASE}/events`);
+  return response.data;
+};
+
+export const getIncidents = async () => {
+  const response = await axios.get(`${BASE}/incidents`);
+  return response.data;
+};
+
+export const getIncidentById = async (id) => {
+  const response = await axios.get(`${BASE}/incidents/${id}`);
+  return response.data;
+};
+
+export const getGraph = async () => {
+  const response = await axios.get(`${BASE}/graph`);
+  return response.data;
+};
+
+export const runSimulation = async (payload) => {
+  const response = await axios.post(
+    `${BASE}/simulation/what-if`,
+    payload
+  );
+
+  return response.data;
+};
