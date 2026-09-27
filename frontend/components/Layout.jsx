@@ -1,0 +1,1 @@
+import {Outlet} from 'react-router-dom';import Sidebar from './Sidebar';import Topbar from './Topbar';export default function Layout(){return <div className="min-h-screen flex bg-base-950"><Sidebar/><div className="flex-1 min-w-0"><Topbar/><main className="p-5 max-w-[1600px] mx-auto"><Outlet/></main></div></div>}

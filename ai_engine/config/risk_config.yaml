@@ -1,0 +1,36 @@
+# ARGUS-X risk model configuration.
+#
+# These thresholds and weights are APPLICATION-SPECIFIC. They are not
+# universal cybersecurity standards. Calibrate them against labelled data
+# in your own environment before relying on them operationally.
+#
+# All weights must be non-negative and sum to 1.0 (the engine validates this).
+
+weights:
+  anomaly_score: 0.40
+  asset_criticality: 0.15
+  resource_sensitivity: 0.15
+  correlation: 0.15
+  network_deviation: 0.15
+
+# risk_level thresholds (inclusive lower bound)
+thresholds:
+  low: 0.00
+  medium: 0.30
+  high: 0.60
+  critical: 0.80
+
+# Deterministic rules: if ALL conditions of a rule match, the event is
+# escalated. These are explicit and configurable, not ML-derived.
+deterministic_rules:
+  # Escalate to critical when a high-sensitivity resource is reached from a
+  # new device AND a new IP with a failing authentication result.
+  critical_combo:
+    enabled: true
+    conditions:
+      new_device: true
+      new_ip: true
+      resource_sensitivity_min: 0.8
+      authentication_failure_min: 0.5
+    set_risk_level: critical
+    set_risk_floor: 0.85
